@@ -1,0 +1,17 @@
+.classpath
+bin/
+environment/
+target/
+.project
+.settings/
+logs/
+.gradle/
+build/
+out/
+*.iml
+*.ipr
+*.iws
+.DS_Store
+work/
+.vagrant/
+gradle-app.setting

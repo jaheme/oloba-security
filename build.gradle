@@ -1,0 +1,51 @@
+def SpringVersion = '4.2.2.RELEASE'
+def JettyVersion = '9.2.21.v20170120'
+
+apply plugin: 'java'
+apply plugin: 'eclipse'
+
+repositories {
+    jcenter()
+	//mavenCentral()
+}
+
+configurations.all {
+    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+        if (details.requested.group == "org.springframework") {
+            details.useVersion "${SpringVersion}"
+        }
+    }
+}
+
+configurations {
+	all*.exclude group: 'commons-logging', module: 'commons-logging'
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '3.5'
+}
+
+
+dependencies {
+    compile 'org.slf4j:slf4j-api:1.7.25'
+	compile 'org.slf4j:jcl-over-slf4j:1.7.25'
+	compile 'ch.qos.logback:logback-classic:1.2.2'
+	compile 'com.google.guava:guava:20.0'
+	compile 'mysql:mysql-connector-java:5.1.35'
+	compile 'com.alibaba:druid:1.0.29'
+	compile "org.eclipse.jetty:jetty-server:${JettyVersion}"
+	compile "org.eclipse.jetty:jetty-webapp:${JettyVersion}"
+	compile "org.eclipse.jetty:jetty-jsp:${JettyVersion}"
+	compile "org.springframework:spring-context:${SpringVersion}"
+	compile "org.springframework:spring-jdbc:${SpringVersion}"
+	compile "org.springframework:spring-web:${SpringVersion}"
+	compile "org.springframework:spring-webmvc:${SpringVersion}"
+	compile "org.springframework.security:spring-security-web:${SpringVersion}"
+	compile "org.springframework.security:spring-security-config:${SpringVersion}"
+	compile 'joda-time:joda-time:2.9.9'
+	compile 'com.fasterxml.jackson.core:jackson-databind:2.8.8'
+	compile 'commons-beanutils:commons-beanutils:1.8.3'
+	compile 'org.apache.commons:commons-lang3:3.5'
+
+    testCompile 'junit:junit:4.12'
+}
