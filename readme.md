@@ -15,7 +15,7 @@ Spring的版本： 4.2.2.RELEASE
 - 项目目录运行gradlew eclipse 构建jar包依赖。
 - 运行java应用(run as java application)：OlobaMain
 
-### 步骤
+### 开发时的步骤
 
 1. web.xml配置filterchain。
 2. 建立security的xml配置文件security.xml。
