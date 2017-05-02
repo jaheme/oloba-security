@@ -1,7 +1,7 @@
 
 ## 权限控制子系统
 
-[设计文档](doc/dev/privilege_权限控制设计思路.html)
+[设计文档](doc/dev/privilege_权限控制设计思路.md)
 
 ### 技术
 Spring-mvc、Spring-security、Spring-jdbc、Jetty、MySql、Jquery、Boostrap等 <br>
