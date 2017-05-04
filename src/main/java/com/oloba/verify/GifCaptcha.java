@@ -78,7 +78,7 @@ public class GifCaptcha extends Captcha {
 	 * @return BufferedImage
 	 */
 	private BufferedImage graphicsImage(Color[] fontcolor, char[] strs, int flag) {
-		BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+		BufferedImage image = new BufferedImage(width, height, BufferedImage.TRANSLUCENT);
 		// 或得图形上下文
 		// Graphics2D g2d=image.createGraphics();
 		Graphics2D g2d = (Graphics2D) image.getGraphics();
@@ -94,7 +94,9 @@ public class GifCaptcha extends Captcha {
 			g2d.setComposite(ac3);
 			g2d.setColor(fontcolor[i]);
 			g2d.drawOval(num(width), num(height), 5 + num(10), 5 + num(10));
+			g2d.drawLine(num(width)+20, num(height), 5 + num(10), 5 + num(10));
 			g2d.drawString(strs[i] + "", (width - (len - i) * w) + (w - font.getSize()) + 1, h - 4);
+			g2d.drawArc(w*i, h*i, width, height, num(10), num(100));
 		}
 		g2d.dispose();
 		return image;
