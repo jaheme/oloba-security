@@ -80,8 +80,11 @@ public class PrivilegeUserController {
 			return MJsonView.resp(BaseStatus.PARAM_INVALID, "请配置角色的权限");
 		}
 		log.warn("userid={}   privilegeList={}", userid, JsonUtil.toStr(privilegeList));
-		boolean ret = privilegeUserService.setting(userid, privilegeList);
-		return ret ? MJsonView.ok() : MJsonView.fail();
+		TResult<Boolean> ret = privilegeUserService.setting(userid, privilegeList);
+		if (StringUtils.isNotBlank(ret.msg)) {
+			return MJsonView.fail(ret.msg);
+		}
+		return MJsonView.ok();
 	}
 	
 	@RequestMapping(value=URI.PRIVILEGE_USER_SETTING_WITHROLE, method=RequestMethod.POST)

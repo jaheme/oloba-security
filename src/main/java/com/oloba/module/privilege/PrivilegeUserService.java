@@ -44,19 +44,22 @@ public class PrivilegeUserService {
 	
 	////////////////////////  user privilege setting  ///////////////////////////
 
-	protected boolean setting(int userid, List<String> req_plist) {
+	protected TResult<Boolean> setting(int userid, List<String> req_plist) {
 		int create_uid = LoginedService.getUserid();
 		List<TPrivilegeUser> list = privilegeUserDao.getByUserid(userid);
+		if (cannotSetting(list, create_uid)) {
+			return TResult.valueOf("此用户的权限不支持配置。", false);
+		}
 		List<TPrivilegeUser> newList = buildPrivileges(userid, create_uid, req_plist);
 		try {
 			if (list.isEmpty()) {
-				return privilegeUserDao.insert(userid, create_uid, newList);
+				return TResult.valueT(privilegeUserDao.insert(userid, create_uid, newList));
 			}
-			return privilegeUserDao.update(userid, create_uid, newList);
+			return TResult.valueT(privilegeUserDao.update(userid, create_uid, newList));
 		} catch (Exception e) {
 			log.error("setting", e);
 		}
-		return false;
+		return TResult.valueOf("配置用户权限出现异常。");
 	}
 	
 	private List<TPrivilegeUser> buildPrivileges(int userid, int create_uid, 
@@ -88,12 +91,33 @@ public class PrivilegeUserService {
 		if (null == role) {
 			return TResult.valueOf("未找到角色");
 		}
+		List<TPrivilegeUser> list = privilegeUserDao.getByUserid(userid);
+		if (cannotSetting(list, create_uid)) {
+			return TResult.valueOf("此用户的权限不支持配置。", false);
+		}
 		try {
 			boolean ret = privilegeUserDao.setting_with_role(userid, role_id, create_uid);
 			return TResult.valueT(ret);
 		} catch (Exception e) {
 			log.error("settingWithRole", e);
 		}
-		return TResult.valueOf("设置权限时出现了未知的错误");
+		return TResult.valueOf("用角色设置权限时出现了未知的错误");
+	}
+	
+	/**
+	 * 检查是否允许配置用户的权限。不同的create_uid，则不允许配置。
+	 * @param list	被配置的用户的权限数据
+	 * @param userid	当前登录用户ID
+	 * @return false 允许配置。
+	 */
+	private boolean cannotSetting(List<TPrivilegeUser> list, int userid) {
+		if (list.isEmpty()) {
+			return false;
+		}
+		TPrivilegeUser pu = list.get(0);
+		if (pu.getCreate_uid() == userid) { // 不允许配置此用户的权限
+			return false;
+		}
+		return true;
 	}
 }

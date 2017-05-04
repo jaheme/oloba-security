@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
@@ -29,6 +31,7 @@ import com.oloba.module.common.URI;
 public class MySecurityPrivilegeFilter extends OncePerRequestFilter {
 
 	private final String PNODES = "pnodes";
+	private static Logger log = LoggerFactory.getLogger(MySecurityPrivilegeFilter.class);
 	
 	/**
 	 * 在此实现此访问请求的权限验证，没有访问权限则抛出异常终止请求。
@@ -88,6 +91,7 @@ public class MySecurityPrivilegeFilter extends OncePerRequestFilter {
 					request.setAttribute(PNODES, JsonUtil.toStr(pnodeList));
 					return true;
 				}
+				log.error("uri={}; nodes={}", uri, JsonUtil.toStr(pnodeList));
 				break;
 			}
 		}
