@@ -19,8 +19,8 @@ public enum PModule {
 	
 	PRIVILEGE_USER("privilege_user", "用户管理配置", PNode.MANAGER, PNode.NEW,
 			PNode.EDIT, PNode.SETTING, PNode.GET),
-	
-	USER("user", "用户管理", PNode.MANAGER)
+
+	USER("user", "用户管理", PNode.MANAGER, PNode.NEW, PNode.EDIT)
 	;
 	
 	public final String pname;
