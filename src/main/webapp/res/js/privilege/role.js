@@ -17,9 +17,9 @@ function roleNewEdit() {
 		return;
 	}
 	if (base.checkid(rid)) {
-		saveRole(new_uri);
-	} else {
 		saveRole(edit_save_uri);
+	} else {
+		saveRole(new_uri);
 	}
 }
 function loadRole(flag) {
